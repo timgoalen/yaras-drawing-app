@@ -3,6 +3,20 @@ const canvas = document.getElementById("canvas");
 /* Create context */
 const ctx = canvas.getContext("2d");
 
+// Get Colour blocks
+// FROM TUTORIAL:
+// Selecting all the div that has a class of clr
+let colours = document.querySelectorAll(".colour");
+// Converting NodeList to Array
+coloursArray = Array.from(colours)
+
+coloursArray.forEach(colour => {
+  colour.addEventListener("click", () => {
+      console.log("yeahyea");
+      ctx.strokeStyle = colour.dataset.colour;
+    })
+})
+
 /* Set canvas size */
 const canvasOffsetX = canvas.offsetLeft;
 const canvasOffsetY = canvas.offsetTop;
