@@ -20,6 +20,13 @@ font-size: 3rem;
 font-family: monospace;
 }
 
+.underline {
+  height: 1%;
+  width: 100%;
+  background: linear-gradient(to right, #094074, #12664F, #F3B700, #C81D25);
+  margin-top: 10vh;
+}
+
 body {
   height: 50vh;
   width: 100vw;

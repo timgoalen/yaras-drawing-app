@@ -48,15 +48,28 @@ function drawLine(e) {
   if (!isPainting) {
     return;
   }
-  ctx.lineTo(e.clientX - canvasOffsetX, e.clientY - canvasOffsetY);
+  // Check if the event is a touch event, and use the appropriate clientX and clientY values
+  const x = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+  const y = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+  ctx.lineTo(x - canvasOffsetX, y - canvasOffsetY);
   ctx.stroke();
 }
 
-/* Event listeners */
+/* Event listeners for both mouse and touch events */
 canvas.addEventListener('mousedown', function (e) {
   isPainting = true;
   startX = e.clientX;
   startY = e.clientY;
+});
+
+canvas.addEventListener('touchstart', function (e) {
+  // Prevent the default touch action (e.g., scrolling)
+  e.preventDefault();
+
+  isPainting = true;
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
 });
 
 canvas.addEventListener('mouseup', function (e) {
@@ -64,4 +77,10 @@ canvas.addEventListener('mouseup', function (e) {
   ctx.beginPath();
 });
 
+canvas.addEventListener('touchend', function () {
+  isPainting = false;
+  ctx.beginPath();
+});
+
 canvas.addEventListener('mousemove', drawLine);
+canvas.addEventListener('touchmove', drawLine);
