@@ -17,22 +17,29 @@ let startY;
 /* Line style */
 ctx.lineWidth = lineWidth;
 ctx.lineCap = 'round';
-let colour = "";
-ctx.strokeStyle = colour;
+ctx.lineJoin = "round";
+// let colour = "";
+ctx.strokeStyle = "white";
 /* Shadow style */
-ctx.shadowColor = "rgba(255, 192, 0, 0.5)";
+ctx.shadowColor = "rgba(255, 192, 0, 0.4)";
+// ctx.shadowColor = "rgba(0, 255, 255, 0.2)";
 ctx.shadowBlur = 3;
 
 // Colour selectors
-let colourChoiceBoxes = document.querySelectorAll("[data-colour]");
+const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 
 function colourClickHandler(event) {
-  colourChoice = event.target.dataset.colour;
-  console.log(colourChoice);
-  colour = colourChoice;
+  ctx.strokeStyle = event.target.dataset.colour;
+  // ctx.shadowColor = event.target.dataset.colour;
+  // Remove 'selected' class from all divs
+  colourChoiceBoxes.forEach(box => {
+    box.classList.remove("colour-box-clicked");
+  })
+  // Add selected class to clicked div
+  event.target.classList.add("colour-box-clicked");
 }
 
-colourChoiceBoxes.forEach(function(box) {
+colourChoiceBoxes.forEach(function (box) {
   box.addEventListener("click", colourClickHandler);
 })
 
@@ -46,13 +53,13 @@ function drawLine(e) {
 }
 
 /* Event listeners */
-canvas.addEventListener('mousedown', function(e) {
+canvas.addEventListener('mousedown', function (e) {
   isPainting = true;
   startX = e.clientX;
   startY = e.clientY;
 });
 
-canvas.addEventListener('mouseup', function(e) {
+canvas.addEventListener('mouseup', function (e) {
   isPainting = false;
   ctx.beginPath();
 });
