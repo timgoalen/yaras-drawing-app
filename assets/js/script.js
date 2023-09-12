@@ -84,3 +84,10 @@ canvas.addEventListener('touchend', function () {
 
 canvas.addEventListener('mousemove', drawLine);
 canvas.addEventListener('touchmove', drawLine);
+
+// Clear canvas function
+const clearBtn = document.getElementById("clear-btn");
+
+clearBtn.addEventListener("click", function() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+})

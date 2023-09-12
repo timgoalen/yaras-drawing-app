@@ -1,16 +1,29 @@
 * {
   margin: 0;
   padding: 0;
-  /* outline: 1px solid red; */
+  outline: 1px solid red;
 }
 
 header {
 position: fixed;
-display: grid;
-place-items: center;
 width: 100%;
 top: 0;
 height: 10vh;
+display: grid;
+grid-template-columns: 10% 50% 40%;
+}
+
+#clear-btn {}
+
+#title {
+  display: grid;
+  place-items: center;
+}
+
+#draw-style-choices {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
 }
 
 h1 {
@@ -28,7 +41,7 @@ font-family: monospace;
 }
 
 body {
-  height: 50vh;
+  height: 80vh;
   width: 100vw;
 }
 
