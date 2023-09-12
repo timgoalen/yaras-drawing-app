@@ -12,23 +12,23 @@
 <body>
 
     <header>
-        <button id="clear-btn">Reset</button>
+        <div id="clear-btn">X</div>
         <div id="title">
             <h1>
                 Yara's drawing
             </h1>
         </div>
         <div id="draw-style-choices">
-            <button class="draw-style-btn">sld-sm</button>
-            <button class="draw-style-btn">sld-md</button>
-            <button class="draw-style-btn">sld-lg</button>
-            <button class="draw-style-btn">out-sm</button>
-            <button class="draw-style-btn">out-md</button>
-            <button class="draw-style-btn">out-lg</button>
+            <div class="draw-style-btn" data-linewidth=5 data-solidline="true">sld-sm</div>
+            <div class="draw-style-btn" data-linewidth=15 data-solidline="true">sld-md</div>
+            <div class="draw-style-btn" data-linewidth=25 data-solidline="true">sld-lg</div>
+            <div class="draw-style-btn" data-linewidth=5 data-solidline="false">out-sm</div>
+            <div class="draw-style-btn" data-linewidth=15 data-solidline="false">out-md</div>
+            <div class="draw-style-btn" data-linewidth=25 data-solidline="false">out-lg</div>
         </div>
     </header>
 
-    <div class="underline"></div>
+    <!-- <div class="underline"></div> -->
 
     <section id="container">
 

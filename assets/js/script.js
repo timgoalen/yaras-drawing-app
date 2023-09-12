@@ -11,26 +11,39 @@ canvas.height = window.innerHeight - canvasOffsetY;
 
 /* Initial variables */
 let isPainting = false;
-let lineWidth = 15;
+let solidLine = false;
+let setLineWidth = 15;
 let startX;
 let startY;
 /* Line style */
-ctx.lineWidth = lineWidth;
+ctx.strokeStyle = "";
 ctx.lineCap = 'round';
 ctx.lineJoin = "round";
-// let colour = "";
-ctx.strokeStyle = "white";
 /* Shadow style */
-ctx.shadowColor = "rgba(255, 192, 0, 0.4)";
-// ctx.shadowColor = "rgba(0, 255, 255, 0.2)";
+// ctx.shadowColor = "rgba(255, 192, 0, 0.4)";
 ctx.shadowBlur = 3;
+
+// Draw-style options
+function setDrawStyle(event) {
+  setLineWidth = event.target.dataset.linewidth;
+  solidLine = event.target.dataset.solidline;
+  // if (solidLine == false) {
+  //   ctx.strokeStyle = "white";
+  // }
+}
+
+const drawStyleBtns = document.querySelectorAll(".draw-style-btn");
+
+drawStyleBtns.forEach(function (btn) {
+  btn.addEventListener("click", setDrawStyle);
+})
 
 // Colour selectors
 const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 
 function colourClickHandler(event) {
   ctx.strokeStyle = event.target.dataset.colour;
-  // ctx.shadowColor = event.target.dataset.colour;
+  ctx.shadowColor = event.target.dataset.colour;
   // Remove 'selected' class from all divs
   colourChoiceBoxes.forEach(box => {
     box.classList.remove("colour-box-clicked");
@@ -53,6 +66,10 @@ function drawLine(e) {
   const y = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
 
   ctx.lineTo(x - canvasOffsetX, y - canvasOffsetY);
+  ctx.lineWidth = setLineWidth;
+  if (solidLine == false) {
+    ctx.strokeStyle = "white";
+  }
   ctx.stroke();
 }
 
@@ -88,6 +105,6 @@ canvas.addEventListener('touchmove', drawLine);
 // Clear canvas function
 const clearBtn = document.getElementById("clear-btn");
 
-clearBtn.addEventListener("click", function() {
+clearBtn.addEventListener("click", function () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 })
