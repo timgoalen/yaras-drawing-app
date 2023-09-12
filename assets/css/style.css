@@ -1,5 +1,6 @@
 :root {
   --header-outline: 2px;
+  --background-colour: #F1F2EE;
 }
 
 * {
@@ -20,7 +21,7 @@ header {
 
 #clear-btn {
   margin: var(--header-outline);
-  background-color: white;
+  background-color: var(--background-colour);
   display: grid;
   place-items: center;
 }
@@ -28,7 +29,7 @@ header {
 #title {
   display: grid;
   place-items: center;
-  background-color: white;
+  background-color: var(--background-colour);
   margin: var(--header-outline) 0;
 }
 
@@ -46,7 +47,7 @@ h1 {
 }
 
 .draw-style-btn {
-  background-color: white;
+  background-color: var(--background-colour);
   /* margin-top: 3%;
   margin-left: 3%; */
   display: grid;
@@ -81,6 +82,7 @@ h1 {
 body {
   height: 80vh;
   width: 100vw;
+  background-color: var(--background-colour);
 }
 
 footer {
