@@ -11,28 +11,44 @@ canvas.height = window.innerHeight - canvasOffsetY;
 
 /* Initial variables */
 let isPainting = false;
-let solidLine = false;
-let setLineWidth = 15;
+let selectedLineWidth = 15;
+let isSolidLine = true;
+let selectedStrokeColour = "#F1F2EE";
+let selectedShadowColour = "#F1F2EE";
 let startX;
 let startY;
 /* Line style */
-ctx.strokeStyle = "";
+ctx.strokeStyle = selectedStrokeColour; /* colour, initially set to same as background */
+ctx.lineWidth = selectedLineWidth;
 ctx.lineCap = 'round';
 ctx.lineJoin = "round";
 /* Shadow style */
-// ctx.shadowColor = "rgba(255, 192, 0, 0.4)";
+ctx.shadowColor = selectedShadowColour;
 ctx.shadowBlur = 3;
 
-// Draw-style options
-function setDrawStyle(event) {
-  setLineWidth = event.target.dataset.linewidth;
-  solidLine = event.target.dataset.solidline;
-  // if (solidLine == false) {
-  //   ctx.strokeStyle = "white";
-  // }
-}
-
+// Draw-style selectors
 const drawStyleBtns = document.querySelectorAll(".draw-style-btn");
+
+function setDrawStyle(event) {
+  selectedLineWidth = event.target.dataset.linewidth;
+  ctx.lineWidth = selectedLineWidth;
+  isSolidLine = event.target.dataset.solidline;
+
+  if (isSolidLine !== true) {
+    selectedStrokeColour = "#F1F2EE";
+    ctx.strokeStyle = selectedStrokeColour;
+  } else {
+    selectedStrokeColour = "#F1F2EE";
+    ctx.strokeStyle = selectedStrokeColour;
+  }
+
+  // Remove 'selected' class from all divs
+  drawStyleBtns.forEach(btn => {
+    btn.classList.remove("draw-style-btn-clicked");
+  })
+  // Add selected class to clicked div
+  event.target.classList.add("draw-style-btn-clicked");
+}
 
 drawStyleBtns.forEach(function (btn) {
   btn.addEventListener("click", setDrawStyle);
@@ -42,8 +58,17 @@ drawStyleBtns.forEach(function (btn) {
 const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 
 function colourClickHandler(event) {
-  ctx.strokeStyle = event.target.dataset.colour;
-  ctx.shadowColor = event.target.dataset.colour;
+  if (isSolidLine) {
+    selectedStrokeColour = event.target.dataset.colour;
+    ctx.strokeStyle = selectedStrokeColour;
+    selectedShadowColour = event.target.dataset.colour;
+    ctx.shadowColor = selectedShadowColour;
+  } else {
+    selectedStrokeColour = "#F1F2EE";
+    selectedShadowColour = event.target.dataset.colour;
+    ctx.shadowColor = selectedShadowColour;
+  }
+
   // Remove 'selected' class from all divs
   colourChoiceBoxes.forEach(box => {
     box.classList.remove("colour-box-clicked");
@@ -65,11 +90,12 @@ function drawLine(e) {
   const x = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
   const y = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
 
+  // if (!isSolidLine) {
+  //   ctx.strokeStyle = "#F1F2EE";
+  // } else {
+  //   ctx.strokeStyle = selectedColour;
+  // }
   ctx.lineTo(x - canvasOffsetX, y - canvasOffsetY);
-  ctx.lineWidth = setLineWidth;
-  if (solidLine == false) {
-    ctx.strokeStyle = "white";
-  }
   ctx.stroke();
 }
 
