@@ -12,6 +12,7 @@
 
 <body>
 
+    <!-- Header -->
     <header>
         <div id="clear-btn"><i class="fa-solid fa-rotate-left fa-xl"></i></div>
         <div id="title">
@@ -20,22 +21,21 @@
             </h1>
         </div>
         <div id="draw-style-choices">
-            <div class="draw-style-btn" data-linewidth=5 data-solidline="true"><i class="fa-solid fa-circle fa-xs"></i></div>
-            <div class="draw-style-btn" data-linewidth=15 data-solidline="true"><i class="fa-solid fa-circle"></i></div>
-            <div class="draw-style-btn" data-linewidth=25 data-solidline="true"><i class="fa-solid fa-circle fa-xl"></i></div>
-            <div class="draw-style-btn" data-linewidth=5 data-solidline="false"><i class="fa-regular fa-circle fa-xs"></i></div>
-            <div class="draw-style-btn" data-linewidth=15 data-solidline="false"><i class="fa-regular fa-circle"></i></div>
-            <div class="draw-style-btn" data-linewidth=25 data-solidline="false"><i class="fa-regular fa-circle fa-xl"></i></div>
+            <div class="draw-style-btn" data-linewidth=5 data-solidline="solid"><i class="fa-solid fa-circle fa-xs"></i></div>
+            <div class="draw-style-btn" data-linewidth=15 data-solidline="solid"><i class="fa-solid fa-circle"></i></div>
+            <div class="draw-style-btn" data-linewidth=25 data-solidline="solid"><i class="fa-solid fa-circle fa-xl"></i></div>
+            <div class="draw-style-btn" data-linewidth=5 data-solidline="outline"><i class="fa-regular fa-circle fa-xs"></i></div>
+            <div class="draw-style-btn" data-linewidth=15 data-solidline="outline"><i class="fa-regular fa-circle"></i></div>
+            <div class="draw-style-btn" data-linewidth=25 data-solidline="outline"><i class="fa-regular fa-circle fa-xl"></i></div>
         </div>
     </header>
 
-    <!-- <div class="underline"></div> -->
-
+    <!-- Canvas -->
     <section id="container">
-
         <canvas id="canvas"></canvas>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="colour-box" data-colour="#094074"></div>
         <div class="colour-box" data-colour="#12664F"></div>
@@ -44,7 +44,8 @@
         <div class="colour-box" data-colour="#F1A9A7"></div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <!-- JS script -->
+    <script defer src="assets/js/script.js"></script>
 </body>
 
 </html>
