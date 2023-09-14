@@ -16,7 +16,7 @@ header {
   top: 0;
   height: 10vh;
   display: grid;
-  grid-template-columns:  10% 65% 25%;
+  grid-template-columns: 10% 60% 30%;
   background: linear-gradient(to right, #094074, #12664F, #F3B700, #C81D25, #F1A9A7);
 }
 
@@ -47,7 +47,7 @@ i {
 h1 {
   text-align: center;
   color: var(--accent-colour);
-  font-size: calc(1.1rem + 2.5vw);
+  font-size: calc(0.9rem + 2vw);
   font-family: monospace;
 }
 
