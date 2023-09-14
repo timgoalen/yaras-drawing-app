@@ -130,6 +130,7 @@ footer {
 }
 
 .colour-box-clicked,
-.draw-style-btn-clicked {
+.draw-style-btn-clicked,
+.initial-selection {
   border: 3px solid var(--accent-colour);
 }

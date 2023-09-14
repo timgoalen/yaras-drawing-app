@@ -52,6 +52,7 @@ function setDrawStyle(event) {
 
   // Remove 'selected' class from all divs
   drawStyleBtns.forEach(btn => {
+    btn.classList.remove("initial-selection");
     btn.classList.remove("draw-style-btn-clicked");
   })
   // Add selected class to clicked div
