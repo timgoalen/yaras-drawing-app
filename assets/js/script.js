@@ -143,6 +143,6 @@ clearBtn.addEventListener("click", function () {
 downloadBtn.addEventListener("click", function() {
   const downloadLink = document.createElement('a');
   downloadLink.href = canvas.toDataURL(); // Convert canvas to a data URL
-  downloadLink.download = 'yaras-drawing.png'; // Specify the file name
+  downloadLink.download = 'yaras-drawing.jpeg'; // Specify the file name
   downloadLink.click(); // Trigger the download
 })
