@@ -13,6 +13,7 @@ canvas.width = window.innerWidth - canvasOffsetX;
 canvas.height = window.innerHeight - canvasOffsetY;
 
 const clearBtn = document.getElementById("clear-btn");
+const downloadBtn = document.getElementById("download-btn");
 const drawStyleBtns = document.querySelectorAll(".draw-style-btn");
 const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 
@@ -135,4 +136,13 @@ canvas.addEventListener('touchmove', drawLine);
 
 clearBtn.addEventListener("click", function () {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+})
+
+// Download drawing function
+
+downloadBtn.addEventListener("click", function() {
+  const downloadLink = document.createElement('a');
+  downloadLink.href = canvas.toDataURL(); // Convert canvas to a data URL
+  downloadLink.download = 'yaras-drawing.png'; // Specify the file name
+  downloadLink.click(); // Trigger the download
 })

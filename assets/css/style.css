@@ -16,19 +16,28 @@ header {
   top: 0;
   height: 10vh;
   display: grid;
-  grid-template-columns: 10% 60% 30%;
+  grid-template-columns: 10% 10% 40% 40%;
   background: linear-gradient(to right, #094074, #12664F, #F3B700, #C81D25, #F1A9A7);
 }
 
-#clear-btn {
-  margin: var(--header-outline);
+#clear-btn,
+#download-btn {
   background-color: var(--background-colour);
   display: grid;
   place-items: center;
   cursor: pointer;
 }
 
-#clear-btn:active {
+#clear-btn {
+  margin: var(--header-outline);
+}
+
+#download-btn {
+  margin: var(--header-outline) var(--header-outline) var(--header-outline) 0;
+}
+
+#clear-btn:active,
+#download-btn:active {
   background-color: var(--accent-colour);
 }
 
@@ -47,7 +56,7 @@ i {
 h1 {
   text-align: center;
   color: var(--accent-colour);
-  font-size: calc(0.9rem + 2vw);
+  font-size: calc(1rem + 1vw);
   font-family: monospace;
 }
 
@@ -106,8 +115,6 @@ footer {
   bottom: 0;
   cursor: pointer;
 }
-
-.colour-box {}
 
 .colour-box:nth-child(1) {
   background-color: #094074;
