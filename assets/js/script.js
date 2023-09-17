@@ -17,6 +17,11 @@ const downloadBtn = document.getElementById("download-btn");
 const drawStyleBtns = document.querySelectorAll(".draw-style-btn");
 const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 
+const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modal-content");
+const canvasImage = document.getElementById("canvas-image");
+const downloadLink = document.getElementById("download-link");
+
 // INITIAL VARIABLES
 
 let isPainting = false;
@@ -141,16 +146,19 @@ clearBtn.addEventListener("click", function () {
 // Download drawing function
 
 downloadBtn.addEventListener("click", function() {
-  // const downloadLink = document.createElement('a');
-  // downloadLink.href = canvas.toDataURL(); 
-  // Convert canvas to a data URL
-  /* // downloadLink.download = 'yaras-drawing.jpeg'; // Specify the file name */
-  // downloadLink.click();
 
   const captureCanvas = canvas.toDataURL();
 
-// Open the Data URL in a new tab
-  const newTab = window.open('', '_blank');
+  modal.style.display = "block";
+  canvasImage.src = captureCanvas;
+
+  downloadLink.download = 'yaras_drawing.png';
+  downloadLink.href = captureCanvas;
+  downloadLink.click();
+})
+
+  // Open the Data URL in a new tab
+  /* const newTab = window.open('', '_blank');
   if (newTab) {
   // The browser allowed the new tab to open, do any additional actions if needed.
    newTab.document.open();
@@ -158,5 +166,5 @@ downloadBtn.addEventListener("click", function() {
    newTab.document.close();
   } else {
   // The browser blocked the new tab from opening. You can inform the user or handle it as needed.
-  }
-})
+  alert("Your browser blocked the saved picture opening in a new tab.");
+  } */
