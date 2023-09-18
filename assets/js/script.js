@@ -19,6 +19,7 @@ const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modal-content");
+const modalCloseBtn = document.getElementById("modal-close-btn");
 const canvasImage = document.getElementById("canvas-image");
 const downloadLink = document.getElementById("download-link");
 
@@ -149,7 +150,7 @@ downloadBtn.addEventListener("click", function() {
 
   const captureCanvas = canvas.toDataURL();
 
-  modal.style.display = "block";
+  modal.style.display = "grid";
   canvasImage.src = captureCanvas;
 
   downloadLink.download = 'yaras_drawing.png';
@@ -157,14 +158,7 @@ downloadBtn.addEventListener("click", function() {
   downloadLink.click();
 })
 
-  // Open the Data URL in a new tab
-  /* const newTab = window.open('', '_blank');
-  if (newTab) {
-  // The browser allowed the new tab to open, do any additional actions if needed.
-   newTab.document.open();
-   newTab.document.write('<html><body><img src="' + captureCanvas + '" /></body></html>');
-   newTab.document.close();
-  } else {
-  // The browser blocked the new tab from opening. You can inform the user or handle it as needed.
-  alert("Your browser blocked the saved picture opening in a new tab.");
-  } */
+modalCloseBtn.addEventListener("click", function() {
+  modal.style.display = "none";
+  // ***RUN THE INIT FUNCTION HERE AGAIN
+})

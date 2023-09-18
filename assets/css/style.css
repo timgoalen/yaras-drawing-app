@@ -117,14 +117,23 @@ body {
   /* width: 100vh; */
   /* height: 100vw; */
   /* overflow: auto; Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(241, 169, 167, 0.8); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(241, 169, 167, 0.8);
+  /* Black w/ opacity */
 }
 
 #modal-content {
-  background-color: #fefefe; /* CHANGE */
-  margin: 10vh 2vw;
-  /* width: 80%; */
+  background-color: #fefefe;  /* CHANGE */
+  margin: 2vh 2vw;
+  width: 92%;
+  height: 88%;
+}
+
+#modal-close-btn {
+  font-size: calc(1rem + 4vw);
+  cursor: pointer;
+  margin-left: 2%;
 }
 
 .saved-picture {
