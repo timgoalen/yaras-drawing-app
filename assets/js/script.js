@@ -145,26 +145,34 @@ clearBtn.addEventListener("click", function () {
 
 // Download drawing function
 
-downloadBtn.addEventListener("click", function() {
+downloadBtn.addEventListener("click", function () {
 
   const captureCanvas = canvas.toDataURL();
-
-  modal.style.display = "block";
-  canvasImage.src = captureCanvas;
-
-  downloadLink.download = 'yaras_drawing.png';
-  downloadLink.href = captureCanvas;
-  downloadLink.click();
-})
+  const originalWindow = window;
 
   // Open the Data URL in a new tab
-  /* const newTab = window.open('', '_blank');
+  const newTab = window.open('', '_blank');
   if (newTab) {
-  // The browser allowed the new tab to open, do any additional actions if needed.
-   newTab.document.open();
-   newTab.document.write('<html><body><img src="' + captureCanvas + '" /></body></html>');
-   newTab.document.close();
+    // The browser allowed the new tab to open, do any additional actions if needed.
+    newTab.document.open();
+    newTab.document.write('<html><body><img src="' + captureCanvas + '" /></body></html>');
+    newTab.document.close();
+    originalWindow.focus();
   } else {
-  // The browser blocked the new tab from opening. You can inform the user or handle it as needed.
-  alert("Your browser blocked the saved picture opening in a new tab.");
-  } */
+    // The browser blocked the new tab from opening. You can inform the user or handle it as needed.
+    alert("Your browser blocked the saved picture opening in a new tab.");
+  }
+
+  // modal.style.display = "block";
+  // canvasImage.src = captureCanvas;
+
+  // downloadLink.download = 'yaras_drawing.png';
+  // downloadLink.href = captureCanvas;
+  // downloadLink.click();
+})
+
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//   }
+// }
