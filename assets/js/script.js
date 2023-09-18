@@ -145,55 +145,26 @@ clearBtn.addEventListener("click", function () {
 
 // Download drawing function
 
-downloadBtn.addEventListener("click", function () {
+downloadBtn.addEventListener("click", function() {
 
-  const capturedCanvas = canvas.toDataURL();
-  const originalWindow = window;
+  const captureCanvas = canvas.toDataURL();
+
+  modal.style.display = "block";
+  canvasImage.src = captureCanvas;
+
+  downloadLink.download = 'yaras_drawing.png';
+  downloadLink.href = captureCanvas;
+  downloadLink.click();
+})
 
   // Open the Data URL in a new tab
   /* const newTab = window.open('', '_blank');
-  /*if (newTab) {
-    // The browser allowed the new tab to open, do any additional actions if needed.
-    newTab.document.open();
-    newTab.document.write(
-      '<html><body><img src="' + capturedCanvas + '" /><a href="https://timgoalen.github.io/yaras-drawing-app/">Back</a></body></html>');
-    newTab.document.close();
-    // originalWindow.focus();
+  if (newTab) {
+  // The browser allowed the new tab to open, do any additional actions if needed.
+   newTab.document.open();
+   newTab.document.write('<html><body><img src="' + captureCanvas + '" /></body></html>');
+   newTab.document.close();
   } else {
-    // The browser blocked the new tab from opening. You can inform the user or handle it as needed.
-    alert("Your browser blocked the saved picture opening in a new tab.");
-  }*/
-
-  // Create a new anchor link element
-  const link = document.createElement('button');
-
-  // Set the href attribute to the value of the 'capturedCanvas' variable
-  link.href = capturedCanvas;
-
-  // Set the link text (you can customize this)
-  link.textContent = 'Picture';
-
-  // Set the download attribute to specify a default file name for the download
-  // link.download = 'image.png';
-  link.classList.add('saved-picture');
-  // Append the link to the document (e.g., to the body)
-  document.body.appendChild(link);
-
-  link.addEventListener("click", function() {
-  
-  })
-  // modal.style.display = "block";
-  // canvasImage.src = captureCanvas;
-
-  // downloadLink.download = 'yaras_drawing.png';
-  // downloadLink.href = captureCanvas;
-  // downloadLink.click();
-})
-
-
-
-// window.onclick = function(event) {
-//   if (event.target == modal) {
-//     modal.style.display = "none";
-//   }
-// }
+  // The browser blocked the new tab from opening. You can inform the user or handle it as needed.
+  alert("Your browser blocked the saved picture opening in a new tab.");
+  } */
