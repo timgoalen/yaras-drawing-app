@@ -12,7 +12,6 @@ const drawStyleBtns = document.querySelectorAll(".draw-style-btn");
 const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
 // Modal elements
 const modal = document.getElementById("modal");
-const modalContent = document.getElementById("modal-content");
 const modalCloseBtn = document.getElementById("modal-close-btn");
 // Image download elements
 const canvasImage = document.getElementById("canvas-image");
@@ -61,7 +60,6 @@ function clearCanvas() {
 }
 
 function fillCanvasBackgroundColour() {
-    // ***CHECK IF TURNING OFF CSS COLOUR IN BODY WORKS
     ctx.fillStyle = DEFAULT_BACKGROUND_COLOUR;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
@@ -71,6 +69,7 @@ function downloadCanvas() {
      const capturedCanvas = canvas.toDataURL();
      // Open Modal and set image src
      modal.style.display = "grid";
+     modalCloseBtn.style.display = "block";
      canvasImage.src = capturedCanvas;
      // Create download link and simulate click
      downloadLink.download = 'yaras_drawing.png';
@@ -80,6 +79,7 @@ function downloadCanvas() {
 
 function closeModal() {
     modal.style.display = "none";
+    modalCloseBtn.style.display = "none";
     initCanvasDefaults();
 }
 
