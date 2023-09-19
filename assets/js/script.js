@@ -1,164 +1,229 @@
 "use strict";
 
-// GLOBAL CONSTANTS
+// -- GLOBAL CONSTANTS
 
-/* Get HTML canvas element */
+// HTML canvas
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
-/* Set canvas size */
-const canvasOffsetX = canvas.offsetLeft;
-const canvasOffsetY = canvas.offsetTop;
-canvas.width = window.innerWidth - canvasOffsetX;
-canvas.height = window.innerHeight - canvasOffsetY;
-
+// UI elements
 const clearBtn = document.getElementById("clear-btn");
 const downloadBtn = document.getElementById("download-btn");
 const drawStyleBtns = document.querySelectorAll(".draw-style-btn");
 const colourChoiceBoxes = document.querySelectorAll("[data-colour]");
-
+// Modal elements
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modal-content");
 const modalCloseBtn = document.getElementById("modal-close-btn");
+// Image download elements
 const canvasImage = document.getElementById("canvas-image");
 const downloadLink = document.getElementById("download-link");
+// Default magic values
+const DEFAULT_LINE_WIDTH = 15;
+const DEFAULT_BACKGROUND_COLOUR = "#F1F2EE";
 
-// INITIAL VARIABLES
+// -- GLOBAL VARIABLES
 
 let isPainting = false;
-let selectedLineWidth = 15;
-let isSolidLine = "solid";
-let selectedStrokeColour = "#F1F2EE";
-let selectedShadowColour = "#F1F2EE";
-let outlineInnerColour = "#F1F2EE";
-let startX;
-let startY;
-/* Line style */
-ctx.strokeStyle = selectedStrokeColour; /* colour, initially set to same as background */
-ctx.lineWidth = selectedLineWidth;
-ctx.lineCap = 'round';
-ctx.lineJoin = "round";
-/* Shadow style */
-ctx.shadowColor = selectedShadowColour;
-ctx.shadowBlur = 3;
+let selectedLineWidth = 0;
+let isLineSolid = "";
+let selectedStrokeColour = "";
+let selectedShadowColour = "";
+let startX = 0;
+let startY = 0;
+let endX = 0;
+let endY = 0;
 
-// Draw-style choice
+// -- EVENT LISTENERS
 
-function setDrawStyle(event) {
-  selectedLineWidth = event.target.dataset.linewidth;
-  ctx.lineWidth = selectedLineWidth;
+// UI Elements:
 
-  isSolidLine = event.target.dataset.solidline;
+clearBtn.addEventListener("click", initCanvasDefaults);
+downloadBtn.addEventListener("click", downloadCanvas);
+modalCloseBtn.addEventListener("click", closeModal);
+drawStyleBtns.forEach(btn => btn.addEventListener("click", drawStyleClickHandler));
+colourChoiceBoxes.forEach(box => box.addEventListener("click", colourClickHandler));
 
-  if (isSolidLine == "outline") {
-    ctx.strokeStyle = outlineInnerColour;
-  } else {
+// Drawing events:
+
+canvas.addEventListener("mousedown", startLineMouse);
+canvas.addEventListener("touchstart", startLineTouch);
+
+canvas.addEventListener("mousemove", drawLine);
+canvas.addEventListener("touchmove", drawLine);
+
+canvas.addEventListener("mouseup", endLine);
+canvas.addEventListener("touchend", endLine);
+
+// -- UTILITY FUNCTIONS
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function fillCanvasBackgroundColour() {
+    // ***CHECK IF TURNING OFF CSS COLOUR IN BODY WORKS
+    ctx.fillStyle = DEFAULT_BACKGROUND_COLOUR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function downloadCanvas() {
+     // Convert canvas to DataURL
+     const capturedCanvas = canvas.toDataURL();
+     // Open Modal and set image src
+     modal.style.display = "grid";
+     canvasImage.src = capturedCanvas;
+     // Create download link and simulate click
+     downloadLink.download = 'yaras_drawing.png';
+     downloadLink.href = capturedCanvas;
+     downloadLink.click();
+}
+
+function closeModal() {
+    modal.style.display = "none";
+    initCanvasDefaults();
+}
+
+function setLineWidth(click) {
+    selectedLineWidth = click.target.dataset.linewidth;
+    ctx.lineWidth = selectedLineWidth;
+}
+
+function setLineSolidity(click) {
+    isLineSolid = click.target.dataset.solidline;
+}
+
+function setStrokeToInvisible() {
+    ctx.strokeStyle = DEFAULT_BACKGROUND_COLOUR;
+}
+
+function usePreviousColour() {
     selectedStrokeColour = selectedShadowColour;
     ctx.strokeStyle = selectedStrokeColour;
-  }
-
-  // Remove 'selected' class from all divs
-  drawStyleBtns.forEach(btn => {
-    btn.classList.remove("initial-selection");
-    btn.classList.remove("draw-style-btn-clicked");
-  })
-  // Add selected class to clicked div
-  event.target.classList.add("draw-style-btn-clicked");
 }
 
-drawStyleBtns.forEach(function (btn) {
-  btn.addEventListener("click", setDrawStyle);
-})
+function checkOutlineChoiceForDrawStyle() {
+    if (isLineSolid == "outline") {
+        setStrokeToInvisible();
+    } else {
+        usePreviousColour();
+    }
+}
 
-// Colour choice
+function checkOutlineChoiceForColour(click) {
+    if (isLineSolid == "solid") {
+        setStrokeColour(click);
+    } else {
+        setStrokeToInvisible();
+    }
+}
 
-function colourClickHandler(event) {
-  if (isSolidLine == "outline") {
-    ctx.strokeStyle = outlineInnerColour;
-  } else {
-    selectedStrokeColour = event.target.dataset.colour;
+function setDefaultSelectionUI(nodeList) {
+    nodeList[1].classList.add("default-selection");
+}
+
+function clearSelectionUI(nodeList) {
+    for (let node of nodeList) {
+        node.classList.remove("default-selection");
+        node.classList.remove("user-selection-btn-clicked");
+    }
+}
+
+function setUserSelectionUI(click) {
+    click.target.classList.add("user-selection-btn-clicked");
+}
+
+function setStrokeColour(click) {
+    selectedStrokeColour = click.target.dataset.colour;
     ctx.strokeStyle = selectedStrokeColour;
-  }
-  selectedShadowColour = event.target.dataset.colour;
-  ctx.shadowColor = selectedShadowColour;
-
-  // Remove 'selected' class from all divs
-  colourChoiceBoxes.forEach(box => {
-    box.classList.remove("colour-box-clicked");
-  })
-
-  // Add selected class to clicked div
-  event.target.classList.add("colour-box-clicked");
 }
 
-colourChoiceBoxes.forEach(function (box) {
-  box.addEventListener("click", colourClickHandler);
-})
-
-// MAIN DRAWING FUNCTION
-
-function drawLine(e) {
-  if (!isPainting) {
-    return;
-  }
-  // Check if the event is a touch event, and use the appropriate clientX and clientY values
-  const x = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-  const y = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
-
-  ctx.lineTo(x - canvasOffsetX, y - canvasOffsetY);
-  ctx.stroke();
+function setShadowColour(click) {
+    selectedShadowColour = click.target.dataset.colour;
+    ctx.shadowColor = selectedShadowColour;
 }
 
-/* Event listeners for both mouse and touch events */
-canvas.addEventListener('mousedown', function (e) {
-  isPainting = true;
-  startX = e.clientX;
-  startY = e.clientY;
-});
+function checkForTouchDevice(event) {
+    if (event.type.startsWith("touch")) {
+        endX = event.touches[0].clientX;
+        endY = event.touches[0].clientY;
+    } else {
+        endX = event.clientX;
+        endY = event.clientY;
+    }
+}
 
-canvas.addEventListener('touchstart', function (e) {
-  // Prevent the default touch action (e.g., scrolling)
-  e.preventDefault();
+// -- MAIN PROCEDURAL FUNCTIONS
 
-  isPainting = true;
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-});
+function initCanvasDefaults() {
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    // Clear canvas and paint background colour
+    clearCanvas();
+    fillCanvasBackgroundColour();
+    // Set default line style
+    selectedLineWidth = DEFAULT_LINE_WIDTH;
+    ctx.lineWidth = selectedLineWidth;
+    isLineSolid = "solid";
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    // Re-set UI selections
+    clearSelectionUI(drawStyleBtns);
+    clearSelectionUI(colourChoiceBoxes);
+    setDefaultSelectionUI(drawStyleBtns);
+    // Set default line colour
+    selectedStrokeColour = DEFAULT_BACKGROUND_COLOUR;
+    ctx.strokeStyle = selectedStrokeColour;
+    // Set default line shadow
+    selectedShadowColour = DEFAULT_BACKGROUND_COLOUR;
+    ctx.shadowColor = selectedShadowColour;
+    ctx.shadowBlur = 3;
+}
 
-canvas.addEventListener('mouseup', function (e) {
-  isPainting = false;
-  ctx.beginPath();
-});
+function drawStyleClickHandler(click) {
+    setLineWidth(click);
+    setLineSolidity(click);
+    checkOutlineChoiceForDrawStyle();
+    clearSelectionUI(drawStyleBtns);
+    setUserSelectionUI(click);
+}
 
-canvas.addEventListener('touchend', function () {
-  isPainting = false;
-  ctx.beginPath();
-});
+function colourClickHandler(click) {
+    checkOutlineChoiceForColour(click);
+    setShadowColour(click);
+    clearSelectionUI(colourChoiceBoxes);
+    setUserSelectionUI(click);
+}
 
-canvas.addEventListener('mousemove', drawLine);
-canvas.addEventListener('touchmove', drawLine);
+// DRAWING FUNCTIONS
 
-// Clear canvas function
+function startLineMouse(event) {
+    isPainting = true;
+    startX = event.clientX;
+    startY = event.clientY;
+}
 
-clearBtn.addEventListener("click", function () {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-})
+function startLineTouch(event) {
+    // Prevent default touch action (scrolling)
+    event.preventDefault();
+    isPainting = true;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+}
 
-// Download drawing function
+function drawLine(event) {
+    if (!isPainting) {
+        return;
+    }
+    checkForTouchDevice(event);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+}
 
-downloadBtn.addEventListener("click", function() {
+function endLine() {
+    isPainting = false;
+    ctx.beginPath();
+}
 
-  const captureCanvas = canvas.toDataURL();
-
-  modal.style.display = "grid";
-  canvasImage.src = captureCanvas;
-
-  downloadLink.download = 'yaras_drawing.png';
-  downloadLink.href = captureCanvas;
-  downloadLink.click();
-})
-
-modalCloseBtn.addEventListener("click", function() {
-  modal.style.display = "none";
-  // ***RUN THE INIT FUNCTION HERE AGAIN
-})
+// Run INIT function on document load
+document.addEventListener("DOMContentLoaded", initCanvasDefaults)
