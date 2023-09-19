@@ -72,7 +72,7 @@ function downloadCanvas() {
      modalCloseBtn.style.display = "block";
      canvasImage.src = capturedCanvas;
      // Create download link and simulate click
-     downloadLink.download = 'yaras_drawing.png';
+     downloadLink.download = "yaras_drawing.png";
      downloadLink.href = capturedCanvas;
      downloadLink.click();
 }
@@ -226,4 +226,4 @@ function endLine() {
 }
 
 // Run INIT function on document load
-document.addEventListener("DOMContentLoaded", initCanvasDefaults)
+document.addEventListener("DOMContentLoaded", initCanvasDefaults);
